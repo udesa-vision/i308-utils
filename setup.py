@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="i308-utils",
+    name="i308_utils",
     version="0.1",
     packages=find_packages(),
     install_requires=[
