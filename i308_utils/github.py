@@ -10,6 +10,7 @@ def download_from_github(
 ):
     """
     Recursively downloads all files from a GitHub repository at a specified branch and relative path.
+    Skips downloading files that already exist in the output directory.
 
     Args:
         repo_url (str): The GitHub repository path in the format 'username/repository'.
@@ -29,11 +30,10 @@ def download_from_github(
     # Construct the API URL to get the repository contents
     api_url = f"https://api.github.com/repos/{repo_url}/contents/{relative_path}?ref={branch}"
 
-    print(api_url)
+    print(f"Fetching contents from: {api_url}")
 
     # Make a GET request to the GitHub API
     response = requests.get(api_url)
-
 
     if response.status_code != 200:
         print(f"Failed to fetch repository contents. Status code: {response.status_code}")
@@ -48,13 +48,18 @@ def download_from_github(
     # Iterate over the contents
     for item in contents:
         if item['type'] == 'file':
+            # Check if the file already exists in the output directory
+            file_path = os.path.join(output_dir, item['name'])
+            if os.path.exists(file_path):
+                print(f"Skipping (already exists): {file_path}")
+                continue
+
             # Download the file
             file_url = item['download_url']
             file_response = requests.get(file_url)
 
             if file_response.status_code == 200:
                 # Save the file to the output directory
-                file_path = os.path.join(output_dir, item['name'])
                 with open(file_path, 'wb') as file:
                     file.write(file_response.content)
                 print(f"Downloaded: {file_path}")

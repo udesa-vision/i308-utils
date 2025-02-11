@@ -71,19 +71,6 @@ def download(url, save_name="", re_download=False):
     print(f"Downloaded: {save_name}")
 
 
-def download_github(
-    repo,
-    file,
-    save_name="",
-    **kwargs
-):
-
-    github = "https://github.com/"
-
-    url = f"{github}{repo}/raw/refs/heads/main/{file}"
-    download(url, save_name=save_name, **kwargs)
-
-
 
 @contextmanager
 def file_like(file):
