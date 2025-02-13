@@ -22,14 +22,18 @@ def display_image(ax, image, title=None):
         ax.set_title(title, fontsize=10)
 
 
-def imshow(image, title=None, figsize=None):
+def imshow(image, title=None, figsize=None, show=True):
     """grafica una imagen usando matplotlib"""
     args = {}
     if figsize is not None:
         args = {"figsize": figsize}
     fig, ax = plt.subplots(**args)
     display_image(ax, image, title)
-    plt.show()
+    if show:
+        plt.show()
+        return None
+    else:
+        return fig, ax
 
 
 def show_images(images, titles=None, grid=None, figsize=None, title=None, subtitle=None, show=True):
