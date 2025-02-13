@@ -24,9 +24,10 @@ def show_images(
         images,
         titles=None,
         grid=None,
-        title=None,
-        subtitle=None,
-        figsize=None
+        figsize=None,
+        # title=None,
+        # subtitle=None,
+        show=True,
 ):
     """
 
@@ -42,12 +43,12 @@ def show_images(
             grid (tuple, optional):
                 tupla que indica el número de filas y columnas a utilizar en el subplot.
                 si no se especifica, se asume una única fila.
-            title (str, optional):
-                título general del plot.
-            subtitle (str, optional):
-                subtítulo general del plot.
             figsize (tuple, optional):
                 tamaño del plot. si no se proporciona, se usará el tamaño por defecto de matplotlib.
+            # title (str, optional):
+            #     título general del plot.
+            # subtitle (str, optional):
+            #     subtítulo general del plot.
 
         Raises:
             ValueError: si la longitud de `titles` no coincide con la longitud de `images`.
@@ -96,20 +97,21 @@ def show_images(
         ax.axis('off')
 
     # ajusta dinámicamente el espaciado según la cantidad de filas
-    top_margin = 0.92 - (0.04 * (n_rows - 1))  # reduce espacio si hay más filas
-    bottom_margin = 0.08 + (0.02 * (n_rows - 1)) + (0.03 * (n_rows > 1))  # más margen si hay más filas
+    # top_margin = 0.92 - (0.04 * (n_rows - 1))  # reduce espacio si hay más filas
+    # bottom_margin = 0.08 + (0.02 * (n_rows - 1)) + (0.03 * (n_rows > 1))  # más margen si hay más filas
 
-    if title is not None:
-        fig.suptitle(title, fontsize=14, y=top_margin)
+    # if title is not None:
+    #     fig.suptitle(title, fontsize=14, y=top_margin)
+    #
+    # if subtitle is not None:
+    #     fig.text(0.5, bottom_margin, subtitle, ha='center', va='bottom', fontsize=12)
+    #
+    # # ajusta márgenes dinámicamente solo si hay pocas filas
+    # fig.subplots_adjust(
+    #     top=top_margin - 0.02 if n_rows == 1 else top_margin - 0.05,
+    #     bottom=bottom_margin + 0.03 if n_rows > 1 else bottom_margin + 0.02,
+    #     hspace=0.3 if n_rows > 1 else 0.1  # reduce el espacio vertical si hay una fila
+    # )
 
-    if subtitle is not None:
-        fig.text(0.5, bottom_margin, subtitle, ha='center', va='bottom', fontsize=12)
-
-    # ajusta márgenes dinámicamente solo si hay pocas filas
-    fig.subplots_adjust(
-        top=top_margin - 0.02 if n_rows == 1 else top_margin - 0.05,
-        bottom=bottom_margin + 0.03 if n_rows > 1 else bottom_margin + 0.02,
-        hspace=0.3 if n_rows > 1 else 0.1  # reduce el espacio vertical si hay una fila
-    )
-
-    plt.show()
+    if show:
+        plt.show()
