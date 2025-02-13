@@ -6,7 +6,8 @@ setup(
     packages=find_packages(),
     install_requires=[
         "matplotlib",
-        "requests"
+        "requests",
+        "opencv-python"
     ],
     author="Esteban Uriza",
     description="paquete de utilidades para tutoriales",
