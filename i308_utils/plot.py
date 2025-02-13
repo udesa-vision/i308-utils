@@ -22,9 +22,12 @@ def display_image(ax, image, title=None):
         ax.set_title(title, fontsize=10)
 
 
-def imshow(image, title=None):
+def imshow(image, title=None, figsize=None):
     """grafica una imagen usando matplotlib"""
-    fig, ax = plt.subplots()
+    args = {}
+    if figsize is not None:
+        args = {"figsize": figsize}
+    fig, ax = plt.subplots(**args)
     display_image(ax, image, title)
     plt.show()
 
