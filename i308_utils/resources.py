@@ -112,7 +112,8 @@ def unzip(zip_file, target_dir=None):
     """
 
     if not target_dir:
-        target_dir = os.path.dirname(zip_file)
+        # target_dir = os.path.dirname(zip_file)
+        target_dir = os.getcwd()
 
     # Create the target directory if it doesn't exist
     os.makedirs(target_dir, exist_ok=True)
