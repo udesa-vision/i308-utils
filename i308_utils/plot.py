@@ -3,32 +3,32 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 
-def prepare_plot_args(image):
-    """prepara los argumentos para imshow según el tipo de imagen"""
-    if len(image.shape) == 2:  # imagen en escala de grises
-        cmap = 'gray'
+def prepare_plot_args(image, cmap=None):
+    """Prepare the arguments for imshow based on the image type and optional colormap."""
+    if len(image.shape) == 2:  # Grayscale image
+        cmap = cmap or 'gray'  # Use provided colormap or default to 'gray'
         vmin, vmax = (0, 255) if image.dtype == np.uint8 else (None, None)
         return image, {'cmap': cmap, 'vmin': vmin, 'vmax': vmax}
-    else:  # imagen en color (asume BGR)
+    else:  # Color image (assumes BGR)
         return cv2.cvtColor(image, cv2.COLOR_BGR2RGB), {}
 
 
-def display_image(ax, image, title=None):
-    """muestra una imagen en un eje matplotlib"""
-    img_data, plot_args = prepare_plot_args(image)
+def display_image(ax, image, title=None, cmap=None):
+    """Display an image on a matplotlib axis with an optional colormap."""
+    img_data, plot_args = prepare_plot_args(image, cmap)
     ax.imshow(img_data, **plot_args)
     ax.axis('off')
     if title:
         ax.set_title(title, fontsize=10)
 
 
-def imshow(image, title=None, figsize=None, show=True):
-    """grafica una imagen usando matplotlib"""
+def imshow(image, title=None, figsize=None, show=True, cmap=None):
+    """Plot an image using matplotlib with an optional colormap."""
     args = {}
     if figsize is not None:
         args = {"figsize": figsize}
     fig, ax = plt.subplots(**args)
-    display_image(ax, image, title)
+    display_image(ax, image, title, cmap)
     if show:
         plt.show()
         return None
@@ -36,13 +36,22 @@ def imshow(image, title=None, figsize=None, show=True):
         return fig, ax
 
 
-def show_images(images, titles=None, grid=None, figsize=None, title=None, subtitle=None, show=True):
-    """muestra múltiples imágenes en una cuadrícula"""
+def show_images(images, titles=None, grid=None, figsize=None, title=None, subtitle=None, show=True, colormaps=None):
+    """Display multiple images in a grid with optional colormaps."""
     if grid is None:
         grid = (1, len(images))
 
     if titles is None:
         titles = [None] * len(images)
+
+    # Handle colormaps: if a single colormap is provided, use it for all images
+    if colormaps is not None:
+        if isinstance(colormaps, str):
+            colormaps = [colormaps] * len(images)
+        elif len(colormaps) != len(images):
+            raise ValueError("Length of colormaps must match the number of images.")
+    else:
+        colormaps = [None] * len(images)
 
     n_rows, n_cols = grid
     if figsize is None:
@@ -59,7 +68,7 @@ def show_images(images, titles=None, grid=None, figsize=None, title=None, subtit
 
     for i, ax in enumerate(axes):
         if i < len(images):
-            display_image(ax, images[i], titles[i])
+            display_image(ax, images[i], titles[i], colormaps[i])
         else:
             ax.axis('off')
 
